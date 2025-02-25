@@ -1,7 +1,7 @@
 "use client";
 import { Hero } from "@/components/about/Hero";
 import { Features } from "@/components/about/Features";
-import { Contact } from "@/components/about/Contact";
+import { Team } from "@/components/about/Team";
 
 export default function AboutPage() {
   return (
@@ -11,12 +11,7 @@ export default function AboutPage() {
         projectName="LifeSync Health Pro"
         projectType="创新型健康管理平台"
       />
-      <Contact
-        email="zeroicey.hp@outlook.com"
-        github="github.com/zeroicey"
-        year="2025"
-        projectName="LifeSync Health Pro"
-      />
+      <Team />
     </main>
   );
 }
