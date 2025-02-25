@@ -3,23 +3,23 @@
 import { useState } from "react";
 import Link from "next/link";
 import { Card } from "@/components/ui/card";
-import { Mail, Lock, Home } from "lucide-react";
+import { Mail, Lock, User, Home } from "lucide-react";
 import { GitHubIcon, GoogleIcon } from "@/components/icons/social";
 
-export function LoginForm() {
+export function RegisterForm() {
   const [isLoading, setIsLoading] = useState(false);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
-    // TODO: 实现登录逻辑
+    // TODO: 实现注册逻辑
     setTimeout(() => setIsLoading(false), 1000);
   };
 
   return (
     <Card className="w-full max-w-md p-8">
       <div className="absolute top-4 left-4">
-        <Link
+        <Link 
           href="/"
           className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
         >
@@ -30,17 +30,30 @@ export function LoginForm() {
 
       <div className="text-center mb-8">
         <h1 className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-          欢迎回到 LifeSync
+          加入 LifeSync
         </h1>
-        <p className="text-gray-600 mt-2">登录您的账号开始健康管理之旅</p>
+        <p className="text-gray-600 mt-2">创建账号开启您的健康管理之旅</p>
       </div>
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-2">
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+            用户名
+          </label>
+          <div className="relative">
+            <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
+            <input
+              id="username"
+              type="text"
+              required
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="请输入用户名"
+            />
+          </div>
+        </div>
+
+        <div className="space-y-2">
+          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
             邮箱地址
           </label>
           <div className="relative">
@@ -56,10 +69,7 @@ export function LoginForm() {
         </div>
 
         <div className="space-y-2">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium text-gray-700"
-          >
+          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
             密码
           </label>
           <div className="relative">
@@ -69,31 +79,44 @@ export function LoginForm() {
               type="password"
               required
               className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-              placeholder="请输入密码"
+              placeholder="请输入密码（至少8位）"
             />
           </div>
         </div>
 
-        <div className="flex items-center justify-between">
-          <div className="flex items-center">
+        <div className="space-y-2">
+          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+            确认密码
+          </label>
+          <div className="relative">
+            <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 h-5 w-5" />
             <input
-              id="remember"
-              type="checkbox"
-              className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+              id="confirmPassword"
+              type="password"
+              required
+              className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+              placeholder="请再次输入密码"
             />
-            <label
-              htmlFor="remember"
-              className="ml-2 block text-sm text-gray-700"
-            >
-              记住我
-            </label>
           </div>
-          <Link
-            href="/forgot-password"
-            className="text-sm text-blue-600 hover:text-blue-800"
-          >
-            忘记密码？
-          </Link>
+        </div>
+
+        <div className="flex items-center">
+          <input
+            id="terms"
+            type="checkbox"
+            required
+            className="h-4 w-4 text-blue-600 border-gray-300 rounded"
+          />
+          <label htmlFor="terms" className="ml-2 block text-sm text-gray-700">
+            我同意{" "}
+            <Link href="/terms" className="text-blue-600 hover:text-blue-800">
+              服务条款
+            </Link>
+            {" "}和{" "}
+            <Link href="/privacy" className="text-blue-600 hover:text-blue-800">
+              隐私政策
+            </Link>
+          </label>
         </div>
 
         <button
@@ -101,7 +124,7 @@ export function LoginForm() {
           disabled={isLoading}
           className="w-full py-2 px-4 border border-transparent rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
         >
-          {isLoading ? "登录中..." : "登录"}
+          {isLoading ? "注册中..." : "注册"}
         </button>
 
         <div className="relative">
@@ -109,9 +132,7 @@ export function LoginForm() {
             <div className="w-full border-t border-gray-300" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">
-              或使用以下方式登录
-            </span>
+            <span className="px-2 bg-white text-gray-500">或使用以下方式注册</span>
           </div>
         </div>
 
@@ -133,9 +154,9 @@ export function LoginForm() {
         </div>
 
         <p className="text-center text-sm text-gray-600">
-          还没有账号？{" "}
-          <Link href="/register" className="text-blue-600 hover:text-blue-800">
-            立即注册
+          已有账号？{" "}
+          <Link href="/auth/login" className="text-blue-600 hover:text-blue-800">
+            立即登录
           </Link>
         </p>
       </form>

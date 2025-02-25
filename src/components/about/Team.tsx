@@ -1,7 +1,8 @@
 "use client";
 
-import { Github, Mail, Globe } from "lucide-react";
+import { Mail, Globe } from "lucide-react";
 import { Card } from "@/components/ui/card";
+import { GitHubIcon } from "@/components/icons/social";
 
 const teamMembers = [
   {
@@ -77,7 +78,7 @@ export function Team() {
                       rel="noopener noreferrer"
                       className="text-gray-600 hover:text-gray-900 transition-colors"
                     >
-                      <Github className="w-5 h-5" />
+                      <GitHubIcon className="w-5 h-5" />
                     </a>
                     <a
                       href={`mailto:${member.links.email}`}

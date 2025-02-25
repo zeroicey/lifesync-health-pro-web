@@ -1,5 +1,6 @@
 "use client";
-import { Mail, Github, MessageCircle, Globe } from "lucide-react";
+import { Mail, MessageCircle, Globe } from "lucide-react";
+import { GitHubIcon } from "@/components/icons/social";
 import { Card } from "@/components/ui/card";
 
 const contactMethods = [
@@ -12,7 +13,7 @@ const contactMethods = [
     actionText: "发送邮件",
   },
   {
-    icon: <Github className="w-8 h-8 text-gray-700" />,
+    icon: <GitHubIcon className="w-8 h-8 text-gray-700" />,
     title: "GitHub",
     description: "在 GitHub 上关注我们",
     primary: "github.com/zeroicey",

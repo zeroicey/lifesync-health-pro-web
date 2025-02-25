@@ -1,5 +1,5 @@
 "use client";
-import { Github } from "lucide-react";
+import { GitHubIcon } from "@/components/icons/social";
 import Image from "next/image";
 
 const footerLinks = [
@@ -49,7 +49,7 @@ export const Footer = () => {
                 rel="noopener noreferrer"
                 className="hover:text-white transition-colors"
               >
-                <Github className="w-5 h-5" />
+                <GitHubIcon className="w-5 h-5" />
               </a>
             </div>
           </div>
