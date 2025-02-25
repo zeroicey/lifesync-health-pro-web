@@ -68,7 +68,7 @@ LifeSync · Holistic Health Pro Web Frontend
 
 ### UI 组件
 
-- 🎨 **Geist UI** - 现代化组件库
+- 🎨 **Shadcn UI** - 现代化组件库
 - 🎨 **Lucide React** - 图标库
 - 🌙 **next-themes** - 主题切换
 
@@ -80,7 +80,6 @@ LifeSync · Holistic Health Pro Web Frontend
 
 ## ⚙️ 系统要求
 
-- Node.js >= 18
 - Bun >= 1.0.0 (推荐)
 
 ## 🚀 快速开始
@@ -88,7 +87,7 @@ LifeSync · Holistic Health Pro Web Frontend
 ### 1. 克隆项目
 
 ```bash
-git clone https://gitee.com/zeroicey/life-sync-health-web.git
+git clone https://gitee.com/zeroicey/life-sync-health-pro-web.git
 cd life-sync-health-web
 ```
 
@@ -96,19 +95,9 @@ cd life-sync-health-web
 
 ```bash
 bun install
-# 或
-npm install
 ```
 
 ### 3. 环境配置
-
-编辑 src/lib/api-client.ts 文件：
-
-```typescript
-const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:3000/api";
-```
-
-### 4. 启动开发服务器
 
 ```bash
 bun dev
@@ -122,11 +111,12 @@ npm run dev
 
 ### 主要页面
 
-- `/` - 首页/登录注册
+- `/` - 首页
+- `/login` 登录
+- `/register` 注册
 - `/dashboard` - 用户仪表盘
-- `/health` - 健康数据管理
 - `/mood` - 心情记录
-- `/memo` - 心路笔记
+- `/ai-assistant` - AI 健康助手
 - `/devices` - 设备管理
 
 ### 功能页面

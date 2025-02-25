@@ -1,7 +1,5 @@
 import type { Metadata } from "next";
 import "../globals.css";
-import { SidebarProvider, SidebarTrigger } from "@/components/ui/sidebar";
-import { AppSidebar } from "@/components/dashboard-sidebar";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,13 +14,7 @@ export default function AuthLayout({
   return (
     <html lang="en">
       <body>
-        <SidebarProvider>
-          <AppSidebar />
-          <main>
-            <SidebarTrigger />
-            {children}
-          </main>
-        </SidebarProvider>
+        <main>{children}</main>
       </body>
     </html>
   );
