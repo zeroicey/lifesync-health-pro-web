@@ -2,8 +2,22 @@
 import { Button } from "@/components/ui/button";
 import { Activity, Brain, Users, Shield, ChevronDown, ArrowRight } from "lucide-react";
 import Typewriter from "typewriter-effect";
+import { useRouter } from "next/navigation";
 
 export const Hero = () => {
+  const router = useRouter();
+
+  const handleStartClick = () => {
+    router.push("/mood");
+  };
+
+  const handleLearnMoreClick = () => {
+    const nextSection = document.getElementById("features");
+    if (nextSection) {
+      nextSection.scrollIntoView({ behavior: "smooth" });
+    }
+  };
+
   return (
     <section className="relative min-h-screen flex items-center justify-center bg-gradient-to-r from-blue-600 to-purple-600 text-white overflow-hidden">
       {/* Background Elements */}
@@ -61,13 +75,19 @@ export const Hero = () => {
 
           {/* CTA Buttons */}
           <div className="space-x-4">
-            <Button size="lg" variant="secondary" className="group">
+            <Button 
+              size="lg" 
+              variant="secondary" 
+              className="group"
+              onClick={handleStartClick}
+            >
               立即开始
               <ArrowRight className="ml-2 w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Button>
             <Button
               size="lg"
               className="border-2 border-white bg-transparent text-white hover:bg-white/20 transition-colors"
+              onClick={handleLearnMoreClick}
             >
               了解更多 <ChevronDown className="ml-2 w-4 h-4" />
             </Button>
@@ -92,7 +112,10 @@ export const Hero = () => {
       </div>
 
       {/* Scroll Indicator */}
-      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce">
+      <div 
+        className="absolute bottom-8 left-1/2 transform -translate-x-1/2 animate-bounce cursor-pointer"
+        onClick={handleLearnMoreClick}
+      >
         <ChevronDown className="w-6 h-6" />
       </div>
     </section>

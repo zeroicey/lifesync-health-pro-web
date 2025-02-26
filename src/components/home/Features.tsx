@@ -37,7 +37,7 @@ const features = [
 
 export const Features = () => {
   return (
-    <section className="py-20 bg-gray-50">
+    <section id="features" className="py-20 bg-gray-50">
       <div className="container mx-auto px-4">
         <div className="text-center mb-16">
           <h2 className="text-4xl font-bold mb-4">全方位健康管理功能</h2>

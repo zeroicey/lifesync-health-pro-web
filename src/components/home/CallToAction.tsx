@@ -1,7 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export const CallToAction = () => {
+  const router = useRouter();
+
+  const handleJoinClick = () => {
+    router.push("/community");
+  };
+
   return (
     <section className="bg-blue-600 text-white py-16">
       <div className="container mx-auto px-4 text-center">
@@ -11,6 +18,7 @@ export const CallToAction = () => {
           variant="secondary"
           size="lg"
           className="bg-white text-blue-600 hover:bg-gray-100"
+          onClick={handleJoinClick}
         >
           加入我们
         </Button>
