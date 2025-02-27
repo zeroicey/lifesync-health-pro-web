@@ -1,11 +1,49 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, Home, Brain, Users, Heart, User, LogOut } from "lucide-react";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(true);
+  const [lastScrollY, setLastScrollY] = useState(0);
+
+  useEffect(() => {
+    let timeoutId: NodeJS.Timeout;
+
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+
+      // 清除之前的定时器
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+
+      // 立即根据滚动方向显示/隐藏导航栏
+      if (currentScrollY > lastScrollY) {
+        setIsVisible(false); // 向下滚动，隐藏
+      } else {
+        setIsVisible(true); // 向上滚动，显示
+      }
+
+      // 如果停止滚动3秒，则隐藏导航栏
+      timeoutId = setTimeout(() => {
+        setIsVisible(false);
+      }, 3000);
+
+      setLastScrollY(currentScrollY);
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+    };
+  }, [lastScrollY]);
 
   const toggleMenu = () => {
     setIsOpen(!isOpen);
@@ -20,9 +58,13 @@ export const Navbar = () => {
 
   return (
     <>
-      <nav className="fixed top-0 left-0 w-full bg-gradient-to-b from-white/95 to-white/90 backdrop-blur-md shadow-lg z-50">
+      <nav
+        className={`fixed top-0 left-0 w-full bg-gradient-to-b from-white/95 to-white/90 backdrop-blur-md shadow-lg z-50 transition-transform duration-300 ${
+          isVisible ? "translate-y-0" : "-translate-y-full"
+        }`}
+      >
         {/* 桌面端导航栏 */}
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="mx-auto px-4 sm:px-6 lg:px-8 w-full">
           <div className="flex justify-between items-center h-20">
             {/* Logo区域 */}
             <div className="flex-shrink-0 flex items-center">
@@ -47,10 +89,10 @@ export const Navbar = () => {
               {menuItems.map((item, index) => {
                 const Icon = item.icon;
                 const gradients = [
-                  'from-blue-500 to-blue-600',
-                  'from-primary to-primary-dark',
-                  'from-purple-500 to-purple-600',
-                  'from-indigo-500 to-indigo-600'
+                  "from-blue-500 to-blue-600",
+                  "from-primary to-primary-dark",
+                  "from-purple-500 to-purple-600",
+                  "from-indigo-500 to-indigo-600",
                 ];
                 return (
                   <Link
@@ -60,10 +102,14 @@ export const Navbar = () => {
                   >
                     <Icon
                       size={20}
-                      className={`transform group-hover:scale-110 transition-transform duration-300 group-hover:text-${gradients[index].split(' ')[1]}`}
+                      className={`transform group-hover:scale-110 transition-transform duration-300 group-hover:text-${
+                        gradients[index].split(" ")[1]
+                      }`}
                     />
                     <span className="font-medium">{item.label}</span>
-                    <span className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r ${gradients[index]} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`} />
+                    <span
+                      className={`absolute bottom-0 left-0 w-full h-0.5 bg-gradient-to-r ${gradients[index]} transform scale-x-0 group-hover:scale-x-100 transition-transform duration-300`}
+                    />
                   </Link>
                 );
               })}
@@ -157,10 +203,10 @@ export const Navbar = () => {
               {menuItems.map((item, index) => {
                 const Icon = item.icon;
                 const gradients = [
-                  'hover:from-blue-50 hover:to-blue-100/50',
-                  'hover:from-primary-50 hover:to-primary-100/50',
-                  'hover:from-purple-50 hover:to-purple-100/50',
-                  'hover:from-indigo-50 hover:to-indigo-100/50'
+                  "hover:from-blue-50 hover:to-blue-100/50",
+                  "hover:from-primary-50 hover:to-primary-100/50",
+                  "hover:from-purple-50 hover:to-purple-100/50",
+                  "hover:from-indigo-50 hover:to-indigo-100/50",
                 ];
                 return (
                   <Link

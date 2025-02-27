@@ -16,7 +16,7 @@ export default function AuthLayout({
     <html lang="en">
       <body>
         <Navbar />
-        <main className="pt-16">{children}</main>
+        <main className="pt-16 mt-6 mx-4">{children}</main>
       </body>
     </html>
   );
