@@ -1,10 +1,12 @@
 'use client'
 
+import { useState, useEffect } from "react"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Heart, Activity, Scale, Brain, Droplets, Thermometer } from "lucide-react"
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { HealthDataForm } from "./HealthDataForm"
+import { MetricCardSkeleton, ChartSkeleton } from "@/components/ui/skeletons"
 
 const mockHeartRateData = [
   { time: '00:00', value: 62 },
@@ -155,6 +157,38 @@ const healthData = {
 }
 
 export function HealthMetrics() {
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // 模拟数据加载
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="space-y-6">
+        <div className="flex justify-between items-center">
+          <h2 className="text-2xl font-bold">健康指标</h2>
+          <HealthDataForm />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+          {[1, 2, 3, 4, 5, 6].map((i) => (
+            <MetricCardSkeleton key={i} />
+          ))}
+        </div>
+
+        {[1, 2, 3].map((i) => (
+          <ChartSkeleton key={i} />
+        ))}
+      </div>
+    )
+  }
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">

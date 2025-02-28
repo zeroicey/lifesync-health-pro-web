@@ -1,8 +1,10 @@
 'use client'
 
+import { useState, useEffect } from "react"
 import { Card } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Target, Trophy, Dumbbell, Apple, Heart } from "lucide-react"
+import { GoalsListSkeleton } from "@/components/ui/skeletons"
 
 type Goal = {
   id: string
@@ -72,6 +74,21 @@ const goals: Goal[] = [
 ]
 
 export function GoalsList() {
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // 模拟数据加载
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (loading) {
+    return <GoalsListSkeleton />
+  }
+
   return (
     <Card className="p-4">
       <div className="flex items-center justify-between mb-4">

@@ -1,7 +1,9 @@
 'use client'
 
+import { useState, useEffect } from "react"
 import { DeviceCard } from "./DeviceCard"
 import { DeviceForm } from "./DeviceForm"
+import { DeviceCardSkeleton } from "@/components/ui/skeletons"
 
 // 模拟设备数据
 const mockDevices = [
@@ -47,6 +49,17 @@ const mockDevices = [
 ]
 
 export function DeviceList() {
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // 模拟数据加载
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [])
+
   return (
     <div className="space-y-6">
       <div className="flex justify-between items-center">
@@ -55,9 +68,17 @@ export function DeviceList() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-        {mockDevices.map((device) => (
-          <DeviceCard key={device.id} device={device} />
-        ))}
+        {loading ? (
+          // 显示骨架屏
+          Array(4).fill(null).map((_, i) => (
+            <DeviceCardSkeleton key={i} />
+          ))
+        ) : (
+          // 显示实际设备列表
+          mockDevices.map((device) => (
+            <DeviceCard key={device.id} device={device} />
+          ))
+        )}
       </div>
     </div>
   )

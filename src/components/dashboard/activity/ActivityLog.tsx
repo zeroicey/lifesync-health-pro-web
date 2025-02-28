@@ -1,9 +1,11 @@
 'use client'
 
+import { useState, useEffect } from "react"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { Activity, Footprints, Heart, Moon, Coffee, Utensils } from "lucide-react"
+import { ActivityLogSkeleton } from "@/components/ui/skeletons"
 
 type ActivityItem = {
   id: string
@@ -70,6 +72,21 @@ const activities: ActivityItem[] = [
 ]
 
 export function ActivityLog() {
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    // 模拟数据加载
+    const timer = setTimeout(() => {
+      setLoading(false)
+    }, 1500)
+
+    return () => clearTimeout(timer)
+  }, [])
+
+  if (loading) {
+    return <ActivityLogSkeleton />
+  }
+
   return (
     <Card className="p-4">
       <div className="flex items-center justify-between mb-4">
