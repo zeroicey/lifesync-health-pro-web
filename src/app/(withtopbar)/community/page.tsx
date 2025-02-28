@@ -5,11 +5,13 @@ import { CommunityHeader } from "@/components/community/CommunityHeader"
 import { CommunityTabs } from "@/components/community/CommunityTabs"
 import { PostCard } from "@/components/community/PostCard"
 import { CommentList } from "@/components/community/CommentList"
-import { TopicList } from "@/components/community/TopicList"
-import { UserRecommendations } from "@/components/community/UserRecommendations"
+import { CommunitySidebar } from "@/components/community/CommunitySidebar"
 import { PostCardSkeleton } from "@/components/ui/skeletons"
 import { FadeIn } from "@/components/ui/animations"
-import { mockPosts, mockTopics, mockUsers, mockComments, mockActivities } from "@/lib/mock-data"
+import { mockPosts, mockComments } from "@/lib/mock-data"
+import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet"
+import { Button } from "@/components/ui/button"
+import { Menu } from "lucide-react"
 
 export default function CommunityPage() {
   const [loading, setLoading] = useState(true)
@@ -43,27 +45,54 @@ export default function CommunityPage() {
 
   return (
     <FadeIn>
-      <div className="container mx-auto py-6 space-y-6">
-        <CommunityHeader 
-          searchQuery={searchQuery}
-          onSearch={handleSearch}
-        />
+      <div className="container mx-auto py-4 sm:py-6 px-4 sm:px-6 space-y-4 sm:space-y-6">
+        <div className="flex items-start justify-between">
+          <div className="flex-1">
+            <CommunityHeader 
+              searchQuery={searchQuery}
+              onSearch={handleSearch}
+            />
+          </div>
+          
+          {/* 移动端侧边栏按钮 */}
+          <div className="lg:hidden ml-4">
+            <Sheet>
+              <SheetTrigger asChild>
+                <Button variant="outline" size="icon" className="shrink-0">
+                  <Menu className="h-5 w-5" />
+                </Button>
+              </SheetTrigger>
+              <SheetContent side="right" className="w-[85vw] sm:w-[400px]">
+                <SheetHeader>
+                  <SheetTitle>社区菜单</SheetTitle>
+                </SheetHeader>
+                <div className="mt-6">
+                  <CommunitySidebar loading={loading} />
+                </div>
+              </SheetContent>
+            </Sheet>
+          </div>
+        </div>
         
-        <CommunityTabs
-          activeTab={activeTab}
-          onTabChange={setActiveTab}
-        />
+        <div className="overflow-x-auto -mx-4 sm:mx-0">
+          <div className="px-4 sm:px-0">
+            <CommunityTabs
+              activeTab={activeTab}
+              onTabChange={setActiveTab}
+            />
+          </div>
+        </div>
 
-        <div className="grid grid-cols-12 gap-6">
-          <div className="col-span-8 space-y-6">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-6">
+          <div className="lg:col-span-8 space-y-4 sm:space-y-6">
             {loading ? (
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {[1, 2, 3].map((i) => (
                   <PostCardSkeleton key={i} />
                 ))}
               </div>
             ) : (
-              <div className="space-y-6">
+              <div className="space-y-4 sm:space-y-6">
                 {posts.map((post) => (
                   <div key={post.id} className="space-y-4">
                     <PostCard post={post} />
@@ -80,34 +109,9 @@ export default function CommunityPage() {
             )}
           </div>
           
-          <div className="col-span-4 space-y-6">
-            <FadeIn delay={0.2}>
-              <TopicList topics={mockTopics} loading={loading} />
-            </FadeIn>
-
-            <FadeIn delay={0.3}>
-              <UserRecommendations users={mockUsers} loading={loading} />
-            </FadeIn>
-
-            {/* 健康活动日历 */}
-            <FadeIn delay={0.4}>
-              <div className="bg-card p-4 rounded-lg border">
-                <h3 className="text-lg font-semibold mb-4">近期活动</h3>
-                <div className="space-y-3">
-                  {mockActivities.map((activity) => (
-                    <div key={activity.id} className="flex items-center space-x-3 p-2 hover:bg-accent rounded-lg cursor-pointer">
-                      <div className="text-2xl">{activity.emoji}</div>
-                      <div>
-                        <p className="font-medium">{activity.title}</p>
-                        <p className="text-sm text-gray-500">
-                          {activity.date} {activity.time}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </FadeIn>
+          {/* 桌面端侧边栏 */}
+          <div className="hidden lg:block lg:col-span-4 space-y-6">
+            <CommunitySidebar loading={loading} />
           </div>
         </div>
       </div>

@@ -1,196 +1,128 @@
 'use client'
 
-import { Card } from "@/components/ui/card"
+import { useState } from 'react'
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
-import { SlideIn } from "@/components/ui/animations"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog"
-import { Battery, Signal, MoreVertical, Bluetooth, RefreshCcw, Settings, Trash2, Power } from "lucide-react"
-import { useState } from "react"
-import { toast } from "sonner"
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
+import { Settings2, Battery, Signal, Bluetooth, Smartphone, Watch, Activity } from "lucide-react"
 
-type DeviceCardProps = {
+interface DeviceCardProps {
   device: {
     id: string
     name: string
     type: string
-    brand: string
-    status: 'connected' | 'disconnected' | 'pairing'
+    status: string
     battery: number
-    signal: number
-    lastSync?: string
+    lastSync: string
+    connected: boolean
   }
 }
 
 export function DeviceCard({ device }: DeviceCardProps) {
-  const [isConnecting, setIsConnecting] = useState(false)
-  const [showSettings, setShowSettings] = useState(false)
+  const [isConfiguring, setIsConfiguring] = useState(false)
 
-  const handleConnect = () => {
-    setIsConnecting(true)
-    // 模拟连接过程
-    setTimeout(() => {
-      setIsConnecting(false)
-      toast.success('设备连接成功')
-    }, 2000)
+  const getDeviceIcon = (type: string) => {
+    switch (type.toLowerCase()) {
+      case 'smartphone':
+        return <Smartphone className="h-5 w-5" />
+      case 'watch':
+        return <Watch className="h-5 w-5" />
+      default:
+        return <Activity className="h-5 w-5" />
+    }
   }
 
-  const handleDisconnect = () => {
-    toast.success('设备已断开连接')
-  }
-
-  const handleSync = () => {
-    toast.success('正在同步数据...')
-  }
-
-  const handleReset = () => {
-    toast.success('设备已重置')
-  }
-
-  const handleDelete = () => {
-    toast.success('设备已删除')
+  const getBatteryColor = (level: number) => {
+    if (level > 60) return 'text-green-500'
+    if (level > 20) return 'text-yellow-500'
+    return 'text-red-500'
   }
 
   return (
-    <SlideIn>
-      <Card className="p-4">
-        <div className="flex items-start justify-between">
-          <div>
-            <h3 className="font-semibold">{device.name}</h3>
-            <p className="text-sm text-gray-500">{device.type} - {device.brand}</p>
+    <Card>
+      <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+        <CardTitle className="text-lg font-semibold flex items-center space-x-2">
+          {getDeviceIcon(device.type)}
+          <span>{device.name}</span>
+        </CardTitle>
+        <Sheet>
+          <SheetTrigger asChild>
+            <Button variant="ghost" size="icon" className="h-8 w-8">
+              <Settings2 className="h-4 w-4" />
+            </Button>
+          </SheetTrigger>
+          <SheetContent side="right" className="w-[90vw] sm:w-[440px]">
+            <SheetHeader>
+              <SheetTitle>设备设置</SheetTitle>
+            </SheetHeader>
+            <div className="mt-6 space-y-6">
+              <div className="space-y-4">
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border rounded-lg">
+                  <div>
+                    <h4 className="font-medium">设备名称</h4>
+                    <p className="text-sm text-muted-foreground">{device.name}</p>
+                  </div>
+                  <Button variant="outline" className="mt-2 sm:mt-0">
+                    重命名
+                  </Button>
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border rounded-lg">
+                  <div>
+                    <h4 className="font-medium">同步频率</h4>
+                    <p className="text-sm text-muted-foreground">每15分钟</p>
+                  </div>
+                  <Button variant="outline" className="mt-2 sm:mt-0">
+                    调整
+                  </Button>
+                </div>
+                <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between p-4 border rounded-lg">
+                  <div>
+                    <h4 className="font-medium">解除配对</h4>
+                    <p className="text-sm text-muted-foreground">将设备从账号中移除</p>
+                  </div>
+                  <Button variant="destructive" className="mt-2 sm:mt-0">
+                    解除配对
+                  </Button>
+                </div>
+              </div>
+            </div>
+          </SheetContent>
+        </Sheet>
+      </CardHeader>
+      <CardContent>
+        <div className="grid gap-4">
+          <div className="grid grid-cols-2 sm:grid-cols-3 gap-4">
+            <div className="flex flex-col space-y-1">
+              <span className="text-sm font-medium">状态</span>
+              <Badge variant={device.connected ? "default" : "secondary"}>
+                {device.connected ? "已连接" : "未连接"}
+              </Badge>
+            </div>
+            <div className="flex flex-col space-y-1">
+              <span className="text-sm font-medium">电量</span>
+              <div className="flex items-center space-x-2">
+                <Battery className={`h-4 w-4 ${getBatteryColor(device.battery)}`} />
+                <span className="text-sm">{device.battery}%</span>
+              </div>
+            </div>
+            <div className="flex flex-col space-y-1 col-span-2 sm:col-span-1">
+              <span className="text-sm font-medium">最后同步</span>
+              <span className="text-sm text-muted-foreground">{device.lastSync}</span>
+            </div>
           </div>
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button variant="ghost" size="icon">
-                <MoreVertical className="h-4 w-4" />
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent align="end">
-              <DropdownMenuLabel>设备操作</DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              {device.status === 'connected' ? (
-                <DropdownMenuItem onClick={handleDisconnect}>
-                  <Power className="h-4 w-4 mr-2" />
-                  断开连接
-                </DropdownMenuItem>
-              ) : (
-                <DropdownMenuItem onClick={handleConnect}>
-                  <Bluetooth className="h-4 w-4 mr-2" />
-                  连接设备
-                </DropdownMenuItem>
-              )}
-              <DropdownMenuItem onClick={handleSync}>
-                <RefreshCcw className="h-4 w-4 mr-2" />
-                同步数据
-              </DropdownMenuItem>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem onClick={() => setShowSettings(true)}>
-                <Settings className="h-4 w-4 mr-2" />
-                设备设置
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleReset} className="text-yellow-600">
-                <RefreshCcw className="h-4 w-4 mr-2" />
-                重置设备
-              </DropdownMenuItem>
-              <DropdownMenuItem onClick={handleDelete} className="text-red-600">
-                <Trash2 className="h-4 w-4 mr-2" />
-                删除设备
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
+          <div className="flex flex-col sm:flex-row gap-2 sm:gap-4">
+            <Button className="flex-1" variant="outline">
+              <Signal className="h-4 w-4 mr-2" />
+              同步数据
+            </Button>
+            <Button className="flex-1" variant="outline">
+              <Bluetooth className="h-4 w-4 mr-2" />
+              重新连接
+            </Button>
+          </div>
         </div>
-
-        <div className="mt-4 space-y-3">
-          <div className="flex items-center space-x-2">
-            <Badge variant={
-              device.status === 'connected' ? 'default' :
-              device.status === 'disconnected' ? 'secondary' :
-              'outline'
-            }>
-              {device.status === 'connected' ? '已连接' :
-               device.status === 'disconnected' ? '未连接' :
-               '配对中'}
-            </Badge>
-            {device.lastSync && (
-              <span className="text-xs text-gray-500">
-                上次同步: {device.lastSync}
-              </span>
-            )}
-          </div>
-
-          <div className="flex items-center space-x-4">
-            <div className="flex items-center space-x-1">
-              <Battery className="h-4 w-4 text-gray-500" />
-              <span className="text-sm">{device.battery}%</span>
-            </div>
-            <div className="flex items-center space-x-1">
-              <Signal className="h-4 w-4 text-gray-500" />
-              <span className="text-sm">{device.signal}%</span>
-            </div>
-          </div>
-        </div>
-
-        <Dialog open={showSettings} onOpenChange={setShowSettings}>
-          <DialogContent>
-            <DialogHeader>
-              <DialogTitle>设备设置 - {device.name}</DialogTitle>
-              <DialogDescription>
-                配置设备参数和同步选项
-              </DialogDescription>
-            </DialogHeader>
-            <div className="space-y-4">
-              <div>
-                <h4 className="font-medium mb-2">同步设置</h4>
-                <div className="space-y-2">
-                  <Button variant="outline" className="w-full justify-start" onClick={() => toast.success('自动同步已开启')}>
-                    自动同步数据
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start" onClick={() => toast.success('已设置同步间隔')}>
-                    设置同步间隔
-                  </Button>
-                </div>
-              </div>
-              <div>
-                <h4 className="font-medium mb-2">设备参数</h4>
-                <div className="space-y-2">
-                  <Button variant="outline" className="w-full justify-start" onClick={() => toast.success('设备名称已更新')}>
-                    修改设备名称
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start" onClick={() => toast.success('测量单位已更新')}>
-                    设置测量单位
-                  </Button>
-                </div>
-              </div>
-              <div>
-                <h4 className="font-medium mb-2">通知设置</h4>
-                <div className="space-y-2">
-                  <Button variant="outline" className="w-full justify-start" onClick={() => toast.success('电量提醒已开启')}>
-                    低电量提醒
-                  </Button>
-                  <Button variant="outline" className="w-full justify-start" onClick={() => toast.success('同步提醒已开启')}>
-                    同步状态提醒
-                  </Button>
-                </div>
-              </div>
-            </div>
-          </DialogContent>
-        </Dialog>
-      </Card>
-    </SlideIn>
+      </CardContent>
+    </Card>
   )
 }

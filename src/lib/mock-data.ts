@@ -1,3 +1,5 @@
+import { Trophy, Star, Heart, Target } from 'lucide-react'
+
 export const mockPosts = [
   {
     id: 1,
@@ -505,3 +507,42 @@ export const mockComments = [
     replies: []
   }
 ]
+
+export const mockUserData = {
+  name: "张三",
+  avatar: "/avatars/default.png",
+  email: "zhangsan@example.com",
+  phone: "13812345678",
+  address: "北京市朝阳区",
+  role: "普通会员",
+  joinDate: "2024-02-28",
+  bio: "热爱运动和健康生活，希望通过 LifeSync 记录我的健康之旅。",
+  stats: [
+    { label: "运动记录", value: "28天" },
+    { label: "达标次数", value: "15次" },
+    { label: "健康指数", value: "92分" }
+  ],
+  achievements: [
+    {
+      name: "运动达人",
+      description: "连续运动30天",
+      icon: Trophy
+    },
+    {
+      name: "目标达成",
+      description: "完成10个健康目标",
+      icon: Star
+    },
+    {
+      name: "健康先锋",
+      description: "健康指数达到90分",
+      icon: Heart
+    }
+  ],
+  healthGoals: [
+    "每天运动30分钟",
+    "保持充足睡眠",
+    "控制饮食均衡",
+    "每周体重记录"
+  ]
+}
