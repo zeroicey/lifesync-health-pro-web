@@ -230,73 +230,51 @@ export const mockPosts = [
 export const mockTopics = [
   {
     id: 1,
-    name: "健康饮食",
-    icon: "🥗",
-    postsCount: 1289,
-    isHot: true
+    name: "健身训练",
+    icon: "💪",
+    posts: 1250
   },
   {
     id: 2,
-    name: "运动健身",
-    icon: "💪",
-    postsCount: 856,
-    isHot: true
+    name: "营养饮食",
+    icon: "🥗",
+    posts: 986
   },
   {
     id: 3,
-    name: "心理健康",
-    icon: "🧠",
-    postsCount: 654,
-    isHot: false
+    name: "瑜伽冥想",
+    icon: "🧘‍♀️",
+    posts: 756
   },
   {
     id: 4,
-    name: "睡眠改善",
-    icon: "😴",
-    postsCount: 432,
-    isHot: true
+    name: "跑步",
+    icon: "🏃‍♂️",
+    posts: 892
   },
   {
     id: 5,
-    name: "瑜伽冥想",
-    icon: "🧘‍♀️",
-    postsCount: 345,
-    isHot: false
+    name: "户外运动",
+    icon: "🏔️",
+    posts: 645
   },
   {
     id: 6,
-    name: "中医养生",
-    icon: "🍵",
-    postsCount: 567,
-    isHot: true
+    name: "健康科普",
+    icon: "📚",
+    posts: 1102
   },
   {
     id: 7,
-    name: "办公室健康",
-    icon: "💼",
-    postsCount: 456,
-    isHot: true
+    name: "心理健康",
+    icon: "🧠",
+    posts: 834
   },
   {
     id: 8,
-    name: "户外运动",
-    icon: "🏃‍♂️",
-    postsCount: 789,
-    isHot: true
-  },
-  {
-    id: 9,
-    name: "健康科普",
-    icon: "📚",
-    postsCount: 678,
-    isHot: false
-  },
-  {
-    id: 10,
-    name: "营养饮食",
-    icon: "🥑",
-    postsCount: 890,
-    isHot: true
+    name: "睡眠改善",
+    icon: "😴",
+    posts: 567
   }
 ]
 
@@ -364,6 +342,36 @@ export const mockUsers = [
     badge: "健康顾问",
     followers: 2345,
     bio: "为您定制专业的健康管理方案"
+  }
+]
+
+export const mockDevices = [
+  {
+    id: "device-001",
+    name: "小米手环 7",
+    type: "watch",
+    status: "已连接",
+    battery: 85,
+    lastSync: "10分钟前",
+    connected: true
+  },
+  {
+    id: "device-002",
+    name: "华为手表 GT3",
+    type: "watch",
+    status: "未连接",
+    battery: 45,
+    lastSync: "2小时前",
+    connected: false
+  },
+  {
+    id: "device-003",
+    name: "iPhone 14 Pro",
+    type: "smartphone",
+    status: "已连接",
+    battery: 92,
+    lastSync: "刚刚",
+    connected: true
   }
 ]
 
@@ -438,72 +446,36 @@ export const mockComments = [
     id: 1,
     content: "非常实用的建议，感谢分享！",
     author: {
-      id: 5,
+      id: 1,
       name: "健康达人",
       avatar: "https://picsum.photos/seed/user5/150/150"
     },
-    likes: 23,
-    createdAt: "2025-02-28T02:30:00.000Z",
+    likes: 15,
+    time: "2025-02-28 11:30",
     replies: [
       {
         id: 2,
-        content: "确实很有帮助，我也受益良多",
+        content: "确实很有帮助，我也受益匪浅",
         author: {
-          id: 6,
+          id: 2,
           name: "运动爱好者",
           avatar: "https://picsum.photos/seed/user6/150/150"
         },
         likes: 8,
-        createdAt: "2025-02-28T02:35:00.000Z"
+        time: "2025-02-28 11:35"
       }
     ]
   },
   {
     id: 3,
-    content: "这个动作要注意安全，建议初学者在专业指导下进行",
-    author: {
-      id: 7,
-      name: "专业教练",
-      avatar: "https://picsum.photos/seed/user7/150/150"
-    },
-    likes: 45,
-    createdAt: "2025-02-28T02:40:00.000Z",
-    replies: []
-  },
-  {
-    id: 4,
-    content: "这个建议非常专业，学到了很多！",
-    author: {
-      id: 8,
-      name: "健康达人",
-      avatar: "https://picsum.photos/seed/user18/150/150"
-    },
-    likes: 34,
-    createdAt: "2025-02-28T02:45:00.000Z",
-    replies: [
-      {
-        id: 5,
-        content: "确实很专业，我也想试试看",
-        author: {
-          id: 9,
-          name: "新手学习者",
-          avatar: "https://picsum.photos/seed/user19/150/150"
-        },
-        likes: 12,
-        createdAt: "2025-02-28T02:50:00.000Z"
-      }
-    ]
-  },
-  {
-    id: 6,
     content: "期待更多类似的分享！",
     author: {
-      id: 10,
-      name: "健康爱好者",
-      avatar: "https://picsum.photos/seed/user20/150/150"
+      id: 3,
+      name: "营养师小王",
+      avatar: "https://picsum.photos/seed/user7/150/150"
     },
-    likes: 56,
-    createdAt: "2025-02-28T03:00:00.000Z",
+    likes: 12,
+    time: "2025-02-28 11:40",
     replies: []
   }
 ]
