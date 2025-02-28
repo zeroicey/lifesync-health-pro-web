@@ -3,11 +3,21 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Menu, X, Home, Brain, Users, Heart, User, LogOut } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import { useAuthStore } from "@/store/useAuthStore";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 export const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
   const [isVisible, setIsVisible] = useState(true);
   const [lastScrollY, setLastScrollY] = useState(0);
+  const { isAuthenticated, user, logout } = useAuthStore();
 
   useEffect(() => {
     let timeoutId: NodeJS.Timeout;
@@ -117,30 +127,39 @@ export const Navbar = () => {
 
             {/* 用户操作区 */}
             <div className="hidden md:flex items-center space-x-6">
-              <Link
-                href="/login"
-                className="text-gray-600 hover:text-primary font-medium px-4 py-2 rounded-lg hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100/50 transition-all duration-300"
-              >
-                登录
-              </Link>
-              <Link
-                href="/register"
-                className="px-6 py-2.5 rounded-xl bg-gradient-to-r from-blue-600 via-primary to-purple-600 text-white font-medium 
-                  hover:shadow-lg hover:shadow-primary/20 transform hover:-translate-y-0.5 transition-all duration-300"
-              >
-                注册
-              </Link>
-              <Link
-                href="/dashboard"
-                className="flex items-center space-x-2 text-gray-600 hover:text-primary group px-4 py-2 rounded-lg 
-                  hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100/50 transition-all duration-300"
-              >
-                <User
-                  size={20}
-                  className="transform group-hover:rotate-12 transition-transform duration-300"
-                />
-                <span className="font-medium">个人中心</span>
-              </Link>
+              {isAuthenticated && user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage src={user.avatar} alt={user.name} />
+                        <AvatarFallback>{user.name?.[0]}</AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem asChild>
+                      <Link href="/profile" className="flex items-center">
+                        <User className="mr-2 h-4 w-4" />
+                        <span>个人中心</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => logout()} className="text-red-600">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>退出登录</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" asChild>
+                    <Link href="/login">登录</Link>
+                  </Button>
+                  <Button asChild>
+                    <Link href="/register">注册</Link>
+                  </Button>
+                </div>
+              )}
             </div>
 
             {/* 移动端菜单按钮 */}
@@ -228,34 +247,39 @@ export const Navbar = () => {
 
           <div className="mt-auto p-6 border-t border-gradient-to-r from-gray-100 via-gray-200 to-gray-100">
             <div className="space-y-4">
-              <Link
-                href="/login"
-                className="block w-full px-6 py-3 text-center rounded-xl border-2 border-primary text-primary font-medium
-                  hover:bg-gradient-to-r hover:from-primary hover:to-primary-dark hover:text-white hover:border-transparent transition-all duration-300"
-                onClick={toggleMenu}
-              >
-                登录
-              </Link>
-              <Link
-                href="/register"
-                className="block w-full px-6 py-3 text-center rounded-xl bg-gradient-to-r from-blue-600 via-primary to-purple-600
-                  text-white font-medium hover:shadow-lg hover:shadow-primary/20 transform hover:-translate-y-0.5 transition-all duration-300"
-                onClick={toggleMenu}
-              >
-                注册
-              </Link>
-              <Link
-                href="/dashboard"
-                className="flex items-center justify-center space-x-3 text-gray-600 hover:text-primary group px-4 py-3 rounded-xl 
-                  hover:bg-gradient-to-r hover:from-gray-50 hover:to-gray-100/50 transition-all duration-300"
-                onClick={toggleMenu}
-              >
-                <User
-                  size={22}
-                  className="transform group-hover:rotate-12 transition-transform duration-300"
-                />
-                <span className="font-medium text-lg">个人中心</span>
-              </Link>
+              {isAuthenticated && user ? (
+                <DropdownMenu>
+                  <DropdownMenuTrigger asChild>
+                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                      <Avatar className="h-10 w-10">
+                        <AvatarImage src={user.avatar} alt={user.name} />
+                        <AvatarFallback>{user.name?.[0]}</AvatarFallback>
+                      </Avatar>
+                    </Button>
+                  </DropdownMenuTrigger>
+                  <DropdownMenuContent align="end" className="w-56">
+                    <DropdownMenuItem asChild>
+                      <Link href="/profile" className="flex items-center">
+                        <User className="mr-2 h-4 w-4" />
+                        <span>个人中心</span>
+                      </Link>
+                    </DropdownMenuItem>
+                    <DropdownMenuItem onClick={() => logout()} className="text-red-600">
+                      <LogOut className="mr-2 h-4 w-4" />
+                      <span>退出登录</span>
+                    </DropdownMenuItem>
+                  </DropdownMenuContent>
+                </DropdownMenu>
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Button variant="ghost" asChild>
+                    <Link href="/login">登录</Link>
+                  </Button>
+                  <Button asChild>
+                    <Link href="/register">注册</Link>
+                  </Button>
+                </div>
+              )}
             </div>
           </div>
         </div>

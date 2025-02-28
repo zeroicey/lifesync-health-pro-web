@@ -19,7 +19,7 @@ export function RegisterForm() {
   return (
     <Card className="w-full max-w-md p-8">
       <div className="absolute top-4 left-4">
-        <Link 
+        <Link
           href="/"
           className="flex items-center text-gray-600 hover:text-gray-900 transition-colors"
         >
@@ -37,7 +37,10 @@ export function RegisterForm() {
 
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="space-y-2">
-          <label htmlFor="username" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="username"
+            className="block text-sm font-medium text-gray-700"
+          >
             用户名
           </label>
           <div className="relative">
@@ -53,7 +56,10 @@ export function RegisterForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="email"
+            className="block text-sm font-medium text-gray-700"
+          >
             邮箱地址
           </label>
           <div className="relative">
@@ -69,7 +75,10 @@ export function RegisterForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="password" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="password"
+            className="block text-sm font-medium text-gray-700"
+          >
             密码
           </label>
           <div className="relative">
@@ -85,7 +94,10 @@ export function RegisterForm() {
         </div>
 
         <div className="space-y-2">
-          <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700">
+          <label
+            htmlFor="confirmPassword"
+            className="block text-sm font-medium text-gray-700"
+          >
             确认密码
           </label>
           <div className="relative">
@@ -111,8 +123,8 @@ export function RegisterForm() {
             我同意{" "}
             <Link href="/terms" className="text-blue-600 hover:text-blue-800">
               服务条款
-            </Link>
-            {" "}和{" "}
+            </Link>{" "}
+            和{" "}
             <Link href="/privacy" className="text-blue-600 hover:text-blue-800">
               隐私政策
             </Link>
@@ -132,7 +144,9 @@ export function RegisterForm() {
             <div className="w-full border-t border-gray-300" />
           </div>
           <div className="relative flex justify-center text-sm">
-            <span className="px-2 bg-white text-gray-500">或使用以下方式注册</span>
+            <span className="px-2 bg-white text-gray-500">
+              或使用以下方式注册
+            </span>
           </div>
         </div>
 
@@ -155,7 +169,7 @@ export function RegisterForm() {
 
         <p className="text-center text-sm text-gray-600">
           已有账号？{" "}
-          <Link href="/auth/login" className="text-blue-600 hover:text-blue-800">
+          <Link href="/login" className="text-blue-600 hover:text-blue-800">
             立即登录
           </Link>
         </p>
