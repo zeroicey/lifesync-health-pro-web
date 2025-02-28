@@ -1,9 +1,11 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { PostCard } from "@/components/community/post-card";
 import { CommunityHeader } from "@/components/community/community-header";
 import { CommunitySidebar } from "@/components/community/community-sidebar";
+import { PostCardSkeleton } from "@/components/ui/skeletons";
+import { FadeIn } from "@/components/ui/animations";
 
 const initialPosts = [
   {
@@ -50,7 +52,7 @@ const initialPosts = [
       avatar: "https://picsum.photos/seed/coach1/300/300",
     },
     content:
-      "💪 每日运动小课堂\n\n很多小伙伴问我如何在家也能保持运动。分享一组简单的居家训练动作：\n1. 开合跳 30下\n2. 俯卧撑 15个\n3. 深蹲 20个\n4. 平板支撑 1分钟\n\n每组做3遍，每天坚持，你也能收获好身材！",
+      "💪 每日运动小课堂\n\n很多小伙伴问我如何在家也能保持运动。分享一组简单的居家训练动作：\n1. 开合跳 30下\n2. 俯卧撑 15个\n3. 下犬式 保持1分钟\n4. 战士一式 两侧各保持30秒\n\n每组做3遍，每天坚持，你也能收获好身材！",
     images: [
       "https://picsum.photos/seed/workout1/800/600",
       "https://picsum.photos/seed/workout2/800/600",
@@ -224,6 +226,15 @@ export default function CommunityPage() {
   const [posts, setPosts] = useState(initialPosts);
   const [activeTab, setActiveTab] = useState("trending");
   const [searchQuery, setSearchQuery] = useState("");
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setLoading(false);
+    }, 1500);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const handleSearch = (query: string) => {
     setSearchQuery(query);
@@ -259,24 +270,32 @@ export default function CommunityPage() {
   );
 
   return (
-    <div className="container mx-auto py-6">
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-        <div className="md:col-span-2 space-y-6">
-          <CommunityHeader
-            onSearch={handleSearch}
-            onTabChange={handleTabChange}
-            onCreatePost={handlePostCreated}
-          />
-          <div className="space-y-6">
-            {filteredPosts.map((post) => (
-              <PostCard key={post.id} post={post} />
-            ))}
+    <FadeIn>
+      <div className="container mx-auto py-6">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="md:col-span-2 space-y-6">
+            <CommunityHeader
+              onSearch={handleSearch}
+              onTabChange={handleTabChange}
+              onCreatePost={handlePostCreated}
+            />
+            <div className="space-y-6">
+              {loading ? (
+                Array(5)
+                  .fill(null)
+                  .map((_, i) => <PostCardSkeleton key={i} />)
+              ) : (
+                filteredPosts.map((post) => (
+                  <PostCard key={post.id} post={post} />
+                ))
+              )}
+            </div>
           </div>
+          <aside className="space-y-6">
+            <CommunitySidebar />
+          </aside>
         </div>
-        <aside className="space-y-6">
-          <CommunitySidebar />
-        </aside>
       </div>
-    </div>
+    </FadeIn>
   );
 }

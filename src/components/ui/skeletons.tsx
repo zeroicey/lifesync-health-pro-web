@@ -97,3 +97,49 @@ export function GoalsListSkeleton() {
     </Card>
   )
 }
+
+export function PostCardSkeleton() {
+  return (
+    <div className="space-y-4 p-4 border rounded-lg bg-card">
+      <div className="flex items-center space-x-4">
+        <Skeleton className="h-12 w-12 rounded-full" />
+        <div className="space-y-2">
+          <Skeleton className="h-4 w-[200px]" />
+          <Skeleton className="h-3 w-[150px]" />
+        </div>
+      </div>
+      <Skeleton className="h-4 w-full" />
+      <Skeleton className="h-4 w-[90%]" />
+      <Skeleton className="h-[200px] w-full rounded-lg" />
+      <div className="flex items-center space-x-4">
+        <Skeleton className="h-8 w-16" />
+        <Skeleton className="h-8 w-16" />
+        <Skeleton className="h-8 w-16" />
+      </div>
+    </div>
+  )
+}
+
+export function CommunityTopicSkeleton() {
+  return (
+    <div className="flex items-center space-x-2 p-2 border rounded-lg bg-card">
+      <Skeleton className="h-8 w-8 rounded-full" />
+      <Skeleton className="h-4 w-[120px]" />
+      <Skeleton className="h-4 w-[60px] ml-auto" />
+    </div>
+  )
+}
+
+export function CommentSkeleton() {
+  return (
+    <div className="space-y-2 p-3 border-b">
+      <div className="flex items-center space-x-2">
+        <Skeleton className="h-8 w-8 rounded-full" />
+        <Skeleton className="h-4 w-[100px]" />
+        <Skeleton className="h-3 w-[60px] ml-auto" />
+      </div>
+      <Skeleton className="h-4 w-[90%]" />
+      <Skeleton className="h-4 w-[70%]" />
+    </div>
+  )
+}
