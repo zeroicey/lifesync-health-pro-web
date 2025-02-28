@@ -1,242 +1,239 @@
-'use client';
+'use client'
 
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer, BarChart, Bar } from 'recharts'
-import { Activity, Heart, Moon, Scale, Footprints, Thermometer, Droplet } from "lucide-react"
-import { StatsCard } from "../stats/StatsCard"
+import { Heart, Activity, Scale, Brain, Droplets, Thermometer } from "lucide-react"
+import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
+import { HealthDataForm } from "./HealthDataForm"
 
-const generateMockData = (startValue: number, variance: number, days: number) => {
-  return Array.from({ length: days }).map((_, index) => {
-    const date = new Date();
-    date.setDate(date.getDate() - (days - 1 - index));
-    return {
-      date: date.toISOString().split('T')[0],
-      value: +(startValue + (Math.random() - 0.5) * variance * 2).toFixed(1)
-    };
-  });
-};
+const mockHeartRateData = [
+  { time: '00:00', value: 62 },
+  { time: '04:00', value: 58 },
+  { time: '08:00', value: 75 },
+  { time: '12:00', value: 82 },
+  { time: '16:00', value: 78 },
+  { time: '20:00', value: 68 },
+  { time: '23:59', value: 65 }
+]
 
-const mockHealthData = {
-  bloodPressure: {
-    current: { systolic: 120, diastolic: 80 },
-    trend: { value: -2.5, isPositive: false },
-    history: generateMockData(120, 5, 30).map(item => ({
-      date: item.date,
-      systolic: item.value,
-      diastolic: item.value - 40 + (Math.random() - 0.5) * 4
-    }))
+const healthMetrics = [
+  {
+    title: "心率",
+    icon: Heart,
+    color: "text-rose-500",
+    bgColor: "bg-rose-50",
+    current: "72",
+    unit: "bpm",
+    range: "60-100",
+    status: "正常"
   },
-  heartRate: {
-    current: { value: 72 },
-    trend: { value: 1.5, isPositive: true },
-    history: generateMockData(72, 5, 30)
+  {
+    title: "血压",
+    icon: Activity,
+    color: "text-blue-500",
+    bgColor: "bg-blue-50",
+    current: "120/80",
+    unit: "mmHg",
+    range: "90/60-140/90",
+    status: "正常"
   },
-  sleep: {
-    current: { hours: 7.5 },
-    trend: { value: 5, isPositive: true },
-    history: generateMockData(7.5, 1, 30)
+  {
+    title: "体重",
+    icon: Scale,
+    color: "text-emerald-500",
+    bgColor: "bg-emerald-50",
+    current: "65.5",
+    unit: "kg",
+    range: "60-70",
+    status: "达标"
   },
-  weight: {
-    current: { value: 65.5 },
-    trend: { value: -1.2, isPositive: true },
-    history: generateMockData(65.5, 0.5, 30)
+  {
+    title: "血氧",
+    icon: Brain,
+    color: "text-purple-500",
+    bgColor: "bg-purple-50",
+    current: "98",
+    unit: "%",
+    range: "95-100",
+    status: "优秀"
   },
-  steps: {
-    current: { value: 8500 },
-    trend: { value: 15, isPositive: true },
-    history: generateMockData(8500, 2000, 30)
+  {
+    title: "血糖",
+    icon: Droplets,
+    color: "text-amber-500",
+    bgColor: "bg-amber-50",
+    current: "5.6",
+    unit: "mmol/L",
+    range: "4.4-7.0",
+    status: "正常"
   },
-  bloodSugar: {
-    current: { value: 5.5 },
-    trend: { value: -3, isPositive: true },
-    history: generateMockData(5.5, 0.5, 30)
-  },
-  temperature: {
-    current: { value: 36.5 },
-    trend: { value: 0.2, isPositive: false },
-    history: generateMockData(36.5, 0.3, 30)
+  {
+    title: "体温",
+    icon: Thermometer,
+    color: "text-red-500",
+    bgColor: "bg-red-50",
+    current: "36.5",
+    unit: "°C",
+    range: "36.3-37.2",
+    status: "正常"
   }
+]
+
+const latestMetrics = [
+  {
+    name: "心率",
+    value: 72,
+    unit: "bpm",
+    time: "2023-02-20 14:30",
+    change: "+2",
+    color: "text-rose-500"
+  },
+  {
+    name: "血压",
+    value: "120/80",
+    unit: "mmHg",
+    time: "2023-02-20 14:30",
+    change: "-5",
+    color: "text-blue-500"
+  },
+  {
+    name: "体重",
+    value: 65.5,
+    unit: "kg",
+    time: "2023-02-20 14:30",
+    change: "+0.5",
+    color: "text-emerald-500"
+  },
+  {
+    name: "血氧",
+    value: 98,
+    unit: "%",
+    time: "2023-02-20 14:30",
+    change: "+1",
+    color: "text-purple-500"
+  },
+  {
+    name: "血糖",
+    value: 5.6,
+    unit: "mmol/L",
+    time: "2023-02-20 14:30",
+    change: "-0.2",
+    color: "text-amber-500"
+  },
+  {
+    name: "体温",
+    value: 36.5,
+    unit: "°C",
+    time: "2023-02-20 14:30",
+    change: "+0.1",
+    color: "text-red-500"
+  }
+]
+
+const healthData = {
+  heartRate: [
+    { date: "2023-02-16", value: 60, min: 50, max: 70 },
+    { date: "2023-02-17", value: 62, min: 52, max: 72 },
+    { date: "2023-02-18", value: 65, min: 55, max: 75 },
+    { date: "2023-02-19", value: 68, min: 58, max: 78 },
+    { date: "2023-02-20", value: 72, min: 62, max: 82 }
+  ],
+  bloodPressure: [
+    { date: "2023-02-16", systolic: 120, diastolic: 80 },
+    { date: "2023-02-17", systolic: 122, diastolic: 82 },
+    { date: "2023-02-18", systolic: 125, diastolic: 85 },
+    { date: "2023-02-19", systolic: 128, diastolic: 88 },
+    { date: "2023-02-20", systolic: 130, diastolic: 90 }
+  ],
+  bloodSugar: [
+    { date: "2023-02-16", value: 5.2 },
+    { date: "2023-02-17", value: 5.4 },
+    { date: "2023-02-18", value: 5.6 },
+    { date: "2023-02-19", value: 5.8 },
+    { date: "2023-02-20", value: 6.0 }
+  ]
 }
 
 export function HealthMetrics() {
   return (
     <div className="space-y-6">
-      <div className="grid gap-4 md:grid-cols-4">
-        <StatsCard
-          title="血压"
-          value={`${mockHealthData.bloodPressure.current.systolic}/${mockHealthData.bloodPressure.current.diastolic}`}
-          description="收缩压/舒张压 (mmHg)"
-          icon={<Activity className="h-6 w-6 text-primary" />}
-          trend={mockHealthData.bloodPressure.trend}
-        />
-        <StatsCard
-          title="心率"
-          value={`${mockHealthData.heartRate.current.value}`}
-          description="每分钟心跳次数 (BPM)"
-          icon={<Heart className="h-6 w-6 text-primary" />}
-          trend={mockHealthData.heartRate.trend}
-        />
-        <StatsCard
-          title="睡眠时长"
-          value={`${mockHealthData.sleep.current.hours}`}
-          description="小时/天"
-          icon={<Moon className="h-6 w-6 text-primary" />}
-          trend={mockHealthData.sleep.trend}
-        />
-        <StatsCard
-          title="体重"
-          value={`${mockHealthData.weight.current.value}`}
-          description="公斤 (kg)"
-          icon={<Scale className="h-6 w-6 text-primary" />}
-          trend={mockHealthData.weight.trend}
-        />
-        <StatsCard
-          title="运动步数"
-          value={`${mockHealthData.steps.current.value}`}
-          description="步/天"
-          icon={<Footprints className="h-6 w-6 text-primary" />}
-          trend={mockHealthData.steps.trend}
-        />
-        <StatsCard
-          title="血糖"
-          value={`${mockHealthData.bloodSugar.current.value}`}
-          description="mmol/L"
-          icon={<Droplet className="h-6 w-6 text-primary" />}
-          trend={mockHealthData.bloodSugar.trend}
-        />
-        <StatsCard
-          title="体温"
-          value={`${mockHealthData.temperature.current.value}`}
-          description="摄氏度 (°C)"
-          icon={<Thermometer className="h-6 w-6 text-primary" />}
-          trend={mockHealthData.temperature.trend}
-        />
+      <div className="flex justify-between items-center">
+        <h2 className="text-2xl font-bold">健康指标</h2>
+        <HealthDataForm />
       </div>
 
-      <Card className="w-full">
-        <CardHeader>
-          <CardTitle>健康趋势分析（近30天）</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Tabs defaultValue="bloodPressure">
-            <TabsList className="grid w-full grid-cols-7">
-              <TabsTrigger value="bloodPressure">血压</TabsTrigger>
-              <TabsTrigger value="heartRate">心率</TabsTrigger>
-              <TabsTrigger value="sleep">睡眠</TabsTrigger>
-              <TabsTrigger value="weight">体重</TabsTrigger>
-              <TabsTrigger value="steps">步数</TabsTrigger>
-              <TabsTrigger value="bloodSugar">血糖</TabsTrigger>
-              <TabsTrigger value="temperature">体温</TabsTrigger>
-            </TabsList>
-            
-            <TabsContent value="bloodPressure">
-              <div className="h-[400px] mt-4">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={mockHealthData.bloodPressure.history}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="systolic" stroke="#8884d8" name="收缩压" strokeWidth={2} />
-                    <Line type="monotone" dataKey="diastolic" stroke="#82ca9d" name="舒张压" strokeWidth={2} />
-                  </LineChart>
-                </ResponsiveContainer>
+      {/* 最新指标卡片 */}
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        {latestMetrics.map((metric, index) => (
+          <Card key={index} className="p-4">
+            <div className="flex justify-between items-start">
+              <div>
+                <p className="text-sm text-gray-500">{metric.name}</p>
+                <h3 className={`text-2xl font-bold ${metric.color}`}>
+                  {metric.value}
+                  <span className="text-sm font-normal ml-1">{metric.unit}</span>
+                </h3>
               </div>
-            </TabsContent>
+              <div className="text-right">
+                <p className="text-sm text-gray-500">{metric.time}</p>
+                <p className={`text-sm ${metric.change.startsWith('-') ? 'text-green-600' : 'text-red-600'}`}>
+                  {metric.change}
+                </p>
+              </div>
+            </div>
+          </Card>
+        ))}
+      </div>
 
-            <TabsContent value="heartRate">
-              <div className="h-[400px] mt-4">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={mockHealthData.heartRate.history}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" name="心率" strokeWidth={2} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </TabsContent>
+      {/* 心率趋势图 */}
+      <Card className="p-4">
+        <h3 className="text-lg font-semibold mb-4">心率趋势</h3>
+        <div className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={healthData.heartRate}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="value" stroke="#2563eb" strokeWidth={2} />
+              <Line type="monotone" dataKey="min" stroke="#94a3b8" strokeDasharray="3 3" />
+              <Line type="monotone" dataKey="max" stroke="#94a3b8" strokeDasharray="3 3" />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </Card>
 
-            <TabsContent value="sleep">
-              <div className="h-[400px] mt-4">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={mockHealthData.sleep.history}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" name="睡眠时长" strokeWidth={2} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </TabsContent>
+      {/* 血压趋势图 */}
+      <Card className="p-4">
+        <h3 className="text-lg font-semibold mb-4">血压趋势</h3>
+        <div className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={healthData.bloodPressure}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="systolic" stroke="#ef4444" name="收缩压" strokeWidth={2} />
+              <Line type="monotone" dataKey="diastolic" stroke="#3b82f6" name="舒张压" strokeWidth={2} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
+      </Card>
 
-            <TabsContent value="weight">
-              <div className="h-[400px] mt-4">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={mockHealthData.weight.history}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" name="体重" strokeWidth={2} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="steps">
-              <div className="h-[400px] mt-4">
-                <ResponsiveContainer width="100%" height="100%">
-                  <BarChart data={mockHealthData.steps.history}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Bar dataKey="value" fill="#8884d8" name="步数" />
-                  </BarChart>
-                </ResponsiveContainer>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="bloodSugar">
-              <div className="h-[400px] mt-4">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={mockHealthData.bloodSugar.history}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" name="血糖" strokeWidth={2} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </TabsContent>
-
-            <TabsContent value="temperature">
-              <div className="h-[400px] mt-4">
-                <ResponsiveContainer width="100%" height="100%">
-                  <LineChart data={mockHealthData.temperature.history}>
-                    <CartesianGrid strokeDasharray="3 3" />
-                    <XAxis dataKey="date" />
-                    <YAxis />
-                    <Tooltip />
-                    <Legend />
-                    <Line type="monotone" dataKey="value" stroke="#8884d8" name="体温" strokeWidth={2} />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
+      {/* 血糖趋势图 */}
+      <Card className="p-4">
+        <h3 className="text-lg font-semibold mb-4">血糖趋势</h3>
+        <div className="h-[300px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <LineChart data={healthData.bloodSugar}>
+              <CartesianGrid strokeDasharray="3 3" />
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Line type="monotone" dataKey="value" stroke="#8b5cf6" strokeWidth={2} />
+            </LineChart>
+          </ResponsiveContainer>
+        </div>
       </Card>
     </div>
   )

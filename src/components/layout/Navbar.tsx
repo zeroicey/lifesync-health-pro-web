@@ -130,7 +130,10 @@ export const Navbar = () => {
               {isAuthenticated && user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <Button
+                      variant="ghost"
+                      className="relative h-10 w-10 rounded-full"
+                    >
                       <Avatar className="h-10 w-10">
                         <AvatarImage src={user.avatar} alt={user.name} />
                         <AvatarFallback>{user.name?.[0]}</AvatarFallback>
@@ -139,12 +142,15 @@ export const Navbar = () => {
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end" className="w-56">
                     <DropdownMenuItem asChild>
-                      <Link href="/profile" className="flex items-center">
+                      <Link href="/dashboard" className="flex items-center">
                         <User className="mr-2 h-4 w-4" />
                         <span>个人中心</span>
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => logout()} className="text-red-600">
+                    <DropdownMenuItem
+                      onClick={() => logout()}
+                      className="text-red-600"
+                    >
                       <LogOut className="mr-2 h-4 w-4" />
                       <span>退出登录</span>
                     </DropdownMenuItem>
@@ -250,7 +256,10 @@ export const Navbar = () => {
               {isAuthenticated && user ? (
                 <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button variant="ghost" className="relative h-10 w-10 rounded-full">
+                    <Button
+                      variant="ghost"
+                      className="relative h-10 w-10 rounded-full"
+                    >
                       <Avatar className="h-10 w-10">
                         <AvatarImage src={user.avatar} alt={user.name} />
                         <AvatarFallback>{user.name?.[0]}</AvatarFallback>
@@ -264,7 +273,10 @@ export const Navbar = () => {
                         <span>个人中心</span>
                       </Link>
                     </DropdownMenuItem>
-                    <DropdownMenuItem onClick={() => logout()} className="text-red-600">
+                    <DropdownMenuItem
+                      onClick={() => logout()}
+                      className="text-red-600"
+                    >
                       <LogOut className="mr-2 h-4 w-4" />
                       <span>退出登录</span>
                     </DropdownMenuItem>
